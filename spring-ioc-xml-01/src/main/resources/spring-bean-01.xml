@@ -1,0 +1,13 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+    <!--
+    1.基于无参数构造函数构造方
+    bean标签: 通过配置Bean标签告诉IOC容器需要创建对象的组件信息
+    id: 组件类的唯一标识
+    class: 组件类全路径名
+     -->
+    <bean id="happyComponent-one" class="com.lingnuokeji.HappyComponent"/>
+    <bean id="happyComponent-two" class="com.lingnuokeji.HappyComponent"/>
+</beans>
