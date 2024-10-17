@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.class05.mapper.MybatisMapper">
+    <!-- 定义 resultMap -->
+    <resultMap id="classStudentMap" type="com.class05.pojo.ClassPojo">
+        <id column="class_id" property="id"/>
+        <result column="class_name" property="class_name"/>
+        <!-- 一对多关系映射 -->
+        <collection property="student" ofType="com.class05.pojo.student">
+            <id column="student_id" property="id"/>
+            <result column="name" property="name"/>
+            <result column="age" property="age"/>
+            <result column="class_id" property="class_id"/>
+        </collection>
+    </resultMap>
+    <resultMap id="studentClassMap" type="com.class05.pojo.student">
+        <id column="student_id" property="id"/>
+        <result column="name" property="name"/>
+        <result column="age" property="age"/>
+        <result column="class_id" property="class_id"/>
+        <!-- 一对多关系映射 -->
+        <collection property="classPojo" ofType="com.class05.pojo.ClassPojo">
+            <id column="class_id" property="id"/>
+            <result column="class_name" property="class_name"/>
+        </collection>
+    </resultMap>
+    <update id="updateStudentByid">
+        update student
+        <set>
+            <if test="name != null">
+                name = #{name},
+            </if>
+            <if test="age != null">
+                        age = #{age},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+    <delete id="deleteStudentById">
+        delete from student where id in
+        <foreach collection="ids" item="id" open="(" separator="," close=")">
+            #{id}
+        </foreach>
+    </delete>
+
+    <!-- 使用 resultMap 查询 -->
+    <select id="selectClassById" resultMap="classStudentMap">
+        select c.id as class_id, c.class_name, s.id as student_id, s.name, s.age, s.class_id
+        from class c, student s
+        where c.id = #{id} and c.id = s.class_id
+    </select>
+    <select id="selectStudentById" resultMap="studentClassMap">
+        select s.id as student_id, s.name, s.age, s.class_id, c.id as class_id, c.class_name
+        from student s, class c
+        where s.id = #{id} and s.class_id = c.id
+    </select>
+    <select id="selectStudentByIdAndAge" resultType="com.class05.pojo.student">
+        select * from student
+        <where>
+            <if test="name!= null">
+                name = #{name}
+            </if>
+            <if test="age != null">
+                and age = #{age}
+            </if>
+        </where>
+    </select>
+    <select id="selectStudentByIdOrAge" resultType="com.class05.pojo.student">
+        SELECT * FROM student
+        WHERE 1=1
+        <if test="name != null and name != ''">
+            AND name = #{name}
+        </if>
+        <if test="age != null">
+            AND age = #{age}
+        </if>
+    </select>
+
+</mapper>
