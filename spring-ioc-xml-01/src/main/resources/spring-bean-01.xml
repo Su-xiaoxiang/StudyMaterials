@@ -10,4 +10,5 @@
      -->
     <bean id="happyComponent-one" class="com.lingnuokeji.HappyComponent"/>
     <bean id="happyComponent-two" class="com.lingnuokeji.HappyComponent"/>
+    <bean id="happyComponent-three" class="com.lingnuokeji.HappyComponent"/>
 </beans>
